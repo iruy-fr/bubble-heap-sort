@@ -1,69 +1,103 @@
-# Bubble Heap Sort
+# Análise Experimental de Bubble Sort e Heap Sort
 
-Trabalho da disciplina de Projeto e Análise de Algoritmos com foco na implementação,
-análise experimental e comparação entre os algoritmos **Bubble Sort** e **Heap Sort**.
+## Introdução
 
-## Objetivo
+Algoritmos de ordenação organizam os elementos de uma coleção segundo uma relação de ordem. Eles são importantes porque aparecem como etapa auxiliar em buscas, processamento de dados, bancos de dados e diversas aplicações que dependem de dados estruturados.
 
-O objetivo deste trabalho é realizar a implementação e a análise experimental de dois
-algoritmos de ordenação com complexidades diferentes:
+Este trabalho compara experimentalmente dois algoritmos de ordenação com complexidades diferentes: Bubble Sort, de comportamento quadrático, e Heap Sort, de comportamento `O(n log n)`. A comparação foi feita em vetores ordenados, inversamente ordenados e aleatórios.
 
-- **Bubble Sort**, com complexidade quadrática `O(n^2)`
-- **Heap Sort**, com complexidade `O(n log n)`
+## Objetivos
 
-A proposta é que os integrantes do projeto desenvolvam, executem, comparem e relatem
-o desempenho dos algoritmos em diferentes cenários de entrada.
+Os objetivos do experimento são:
 
-## Atividades
+- avaliar o desempenho comparativo entre Bubble Sort e Heap Sort;
+- observar como cada algoritmo se comporta em diferentes tipos de entrada;
+- verificar se os tempos medidos acompanham a análise teórica de complexidade;
+- registrar os resultados por meio de tabelas e gráficos.
 
-1. Implementar os algoritmos de ordenação Bubble Sort e Heap Sort.
-2. Executar testes experimentais com vetores de diferentes tamanhos e características:
-   - Vetores ordenados
-   - Vetores inversamente ordenados
-   - Vetores aleatórios
-3. No caso dos vetores aleatórios, realizar múltiplas execuções para cada cenário
-   (por exemplo, 10 execuções) e aplicar uma metodologia de consolidação dos resultados:
-   - Média das execuções, com ou sem exclusão da melhor e da pior execução
-   - Outra abordagem válida, desde que devidamente justificada no relatório
-4. Medir o tempo de execução e/ou o número de operações realizadas, como:
-   - Comparações
-   - Trocas
-5. Comparar o desempenho dos dois algoritmos a partir dos dados obtidos.
+## Algoritmos Utilizados
 
-## O Que Deve Constar No Relatório
+### Bubble Sort
 
-- Introdução com uma breve explicação sobre algoritmos de ordenação e o propósito do trabalho
-- Objetivos do experimento, como:
-  - Avaliar comparativamente o desempenho de dois algoritmos com complexidades diferentes
-  - Observar como o comportamento dos algoritmos varia conforme o tipo de entrada
-  - Verificar na prática se os tempos de execução estão de acordo com a análise teórica
-- Descrição dos algoritmos utilizados, incluindo funcionamento e complexidade
-- Prova de corretude dos algoritmos e demonstração dos cálculos de complexidade
-- Análise teórica dos diferentes casos clássicos, incluindo melhor caso e pior caso
-- Metodologia do experimento:
-  - Tamanhos dos vetores
-  - Tipos de entrada
-  - Número de repetições
-  - Linguagem e ferramentas utilizadas
-- Resultados:
-  - Tabelas comparativas com tempos e/ou contagens de operações
-  - Gráficos ilustrando os resultados para cada tipo de vetor
-- Análise dos resultados, comparando Bubble Sort e Heap Sort nos diferentes cenários
-- Conclusão com os principais achados, limitações e observações finais
+O Bubble Sort percorre o vetor comparando pares de elementos adjacentes. Quando dois elementos estão fora de ordem, eles são trocados. Ao final de cada passagem, o maior elemento ainda não posicionado fica em sua posição correta no final do vetor.
 
-## Apresentação
+A implementação usada possui uma otimização: se uma passagem completa não realiza nenhuma troca, o algoritmo encerra, pois o vetor já está ordenado.
 
-Cada grupo deverá apresentar os resultados obtidos em **10 a 15 minutos**.
+Complexidade:
 
-A apresentação deve conter:
+- Melhor caso: `O(n)`, quando o vetor já está ordenado e nenhuma troca ocorre na primeira passagem.
+- Pior caso: `O(n^2)`, quando o vetor está em ordem inversa.
+- Caso médio: `O(n^2)`, para entradas aleatórias.
 
-- Breve explicação dos algoritmos e de suas complexidades
-- Metodologia dos testes realizados
-- Gráficos e principais resultados obtidos
-- Conclusão final
+Corretude:
 
-## Entrega
+Após a primeira passagem, o maior elemento do vetor está na última posição. Após a segunda passagem, o segundo maior elemento está na penúltima posição, e assim sucessivamente. O invariante do laço externo é: após `i` passagens, os `i` maiores elementos estão nas `i` últimas posições, em ordem correta. Quando o laço termina, todos os elementos estão posicionados corretamente. Se não ocorre troca em uma passagem, todos os pares adjacentes já estão em ordem, logo o vetor inteiro está ordenado.
 
-- Data limite para entrega do relatório e apresentação: **07/04/2026**
-- O relatório deve ser enviado em PDF
-- O código-fonte deve ser anexado ou hospedado em repositório, como GitHub
+### Heap Sort
+
+O Heap Sort transforma o vetor em um heap máximo, isto é, uma estrutura em que cada nó pai é maior ou igual aos seus filhos. Em seguida, o maior elemento, localizado na raiz, é trocado com o último elemento da parte não ordenada. O tamanho do heap é reduzido e a propriedade de heap é restaurada com `heapify`.
+
+Complexidade:
+
+- Construção do heap: `O(n)`.
+- Extrações sucessivas: `n - 1` extrações, cada uma com custo `O(log n)`.
+- Melhor caso, pior caso e caso médio: `O(n log n)`.
+
+Corretude:
+
+Depois da construção inicial, a raiz contém o maior elemento do heap. A cada iteração, esse maior elemento é colocado no fim da parte ainda não ordenada. O invariante do laço de extração é: a parte final do vetor contém os maiores elementos já removidos, em ordem correta, e a parte inicial mantém a propriedade de heap. Ao final, todos os elementos foram removidos do heap e colocados em ordem crescente no vetor.
+
+## Metodologia
+
+Os testes foram executados em Python, usando:
+
+- `random` para gerar vetores aleatórios;
+- `time.perf_counter()` para medir o tempo de execução;
+- `matplotlib` para gerar os gráficos;
+- `unittest` para validar a corretude dos algoritmos.
+
+Foram usados os tamanhos `1000`, `3000` e `5000`. Para cada tamanho foram avaliados três tipos de entrada:
+
+- vetor aleatório;
+- vetor já ordenado;
+- vetor inversamente ordenado.
+
+Foram realizadas 5 execuções para cada combinação de algoritmo, tamanho e tipo de entrada. Embora o enunciado cite 10 execuções como exemplo, 5 execuções foram adotadas para reduzir o tempo total do experimento, mantendo repetição suficiente para calcular uma média simples. A métrica analisada foi o tempo médio de execução em milissegundos.
+
+O código também valida cada ordenação comparando o resultado produzido pelo algoritmo com `sorted(vetor_original)`.
+
+## Resultados
+
+| Tipo de vetor | Tamanho | Bubble Sort (ms) | Heap Sort (ms) |
+|---|---:|---:|---:|
+| Aleatório | 1000 | 18.031 | 0.761 |
+| Aleatório | 3000 | 179.938 | 3.071 |
+| Aleatório | 5000 | 523.332 | 5.465 |
+| Inverso | 1000 | 22.956 | 0.815 |
+| Inverso | 3000 | 223.288 | 2.831 |
+| Inverso | 5000 | 637.869 | 4.876 |
+| Ordenado | 1000 | 0.023 | 0.968 |
+| Ordenado | 3000 | 0.072 | 3.009 |
+| Ordenado | 5000 | 0.112 | 5.657 |
+
+![Desempenho em vetor aleatório](grafico_aleatorio.png)
+
+![Desempenho em vetor inverso](grafico_inverso.png)
+
+![Desempenho em vetor ordenado](grafico_ordenado.png)
+
+## Análise dos Resultados
+
+Nos vetores aleatórios, o Bubble Sort cresceu rapidamente conforme o tamanho do vetor aumentou. Para `n = 5000`, seu tempo médio foi de `523.332 ms`, enquanto o Heap Sort ficou em `5.465 ms`. Esse comportamento está de acordo com a diferença teórica entre `O(n^2)` e `O(n log n)`.
+
+Nos vetores inversamente ordenados, o Bubble Sort apresentou seu pior comportamento, pois precisa realizar muitas trocas. O tempo médio em `n = 5000` foi de `637.869 ms`, o maior valor observado no experimento. O Heap Sort permaneceu baixo, com `4.876 ms`, pois sua estrutura de heap mantém a complexidade `O(n log n)`.
+
+Nos vetores ordenados, o Bubble Sort foi o mais rápido. Isso ocorreu por causa da otimização que interrompe a execução quando nenhuma troca acontece. Nesse caso, o algoritmo faz apenas uma passagem, resultando em comportamento `O(n)`. Para `n = 5000`, o Bubble Sort levou `0.112 ms`, contra `5.657 ms` do Heap Sort.
+
+Assim, o Heap Sort teve melhor desempenho nos casos aleatório e inverso, enquanto o Bubble Sort foi melhor no caso já ordenado devido à otimização implementada.
+
+## Conclusão
+
+O experimento confirmou a análise teórica dos algoritmos. O Bubble Sort é simples, mas seu crescimento quadrático torna seu uso inadequado para entradas maiores quando os dados não estão ordenados. O Heap Sort foi mais eficiente nos cenários aleatório e inverso, mostrando a vantagem prática de um algoritmo `O(n log n)`.
+
+A principal exceção ocorreu no vetor já ordenado, em que o Bubble Sort otimizado superou o Heap Sort por encerrar após a primeira passagem. Como limitação, o experimento mediu apenas tempo de execução, sem contar comparações ou trocas. Ainda assim, os resultados foram suficientes para comparar o comportamento dos algoritmos nos cenários exigidos.

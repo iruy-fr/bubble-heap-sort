@@ -1,55 +1,61 @@
-# Análise Experimental de Algoritmos de Ordenação
+# Bubble Heap Sort
 
-##  Objetivo
-Este projeto tem como objetivo comparar o desempenho de dois algoritmos de ordenação com diferentes complexidades:
+Projeto da disciplina de Projeto e Análise de Algoritmos para implementação e análise experimental dos algoritmos **Bubble Sort** e **Heap Sort**.
 
-- Bubble Sort (O(n²))
-- Heap Sort (O(n log n))
+## Conteúdo
 
-A análise é feita por meio de experimentos com diferentes tipos de entrada e tamanhos de vetores.
----
-##  Metodologia
-Foram realizados testes considerando:
+- `codigo.py`: implementação dos algoritmos, execução dos experimentos, geração do CSV e dos gráficos.
+- `test_codigo.py`: testes de corretude dos algoritmos.
+- `TRABALHO.md`: relatório final em Markdown.
+- `resultados.csv`: resultados brutos das execuções.
+- `grafico_aleatorio.png`, `grafico_inverso.png`, `grafico_ordenado.png`: gráficos gerados pelo experimento.
 
-### Tipos de vetores:
-- Vetores aleatórios
-- Vetores ordenados (melhor caso para Bubble Sort)
-- Vetores inversamente ordenados (pior caso para Bubble Sort)
+O notebook `analise_ordenacao.ipynb` foi mantido como material auxiliar/histórico. A fonte principal e atualizada do experimento é `codigo.py`.
 
-### Tamanhos dos vetores:
-- 1000 elementos
-- 3000 elementos
-- 5000 elementos
+## Metodologia
 
-### Execuções:
-- 5 execuções para cada cenário
-- Utilização da média dos tempos para análise
+O experimento compara os algoritmos em três tipos de entrada:
 
-### Métrica:
-- Tempo de execução em milissegundos (ms)
+- vetores aleatórios;
+- vetores ordenados;
+- vetores inversamente ordenados.
 
----
+Foram usados vetores com `1000`, `3000` e `5000` elementos. Cada cenário foi executado 5 vezes e analisado pela média do tempo de execução em milissegundos.
 
-## Tecnologias utilizadas
-- Python
-- Bibliotecas:
-  - random
-  - time
-  - matplotlib
+## Como Executar
 
----
+Crie e ative um ambiente virtual:
 
-##  Como executar
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-1. Instale as dependências:
+Instale as dependências:
 
-pip install matplotlib
+```bash
+pip install -r requirements.txt
+```
 
-2. Execute o código:
+Execute os testes:
 
+```bash
+python -m unittest -v
+```
+
+Execute o experimento:
+
+```bash
 python codigo.py
+```
 
-=> O programa irá:
-   -Executar os testes automaticamente
-   -Exibir os tempos no terminal
-   -Gerar gráficos comparativos
+Ao final, o script gera:
+
+- `resultados.csv`;
+- `grafico_aleatorio.png`;
+- `grafico_inverso.png`;
+- `grafico_ordenado.png`.
+
+## Resultado Resumido
+
+O Heap Sort foi mais rápido nos vetores aleatórios e inversos, como esperado para um algoritmo `O(n log n)`. O Bubble Sort foi mais rápido nos vetores já ordenados porque a implementação possui parada antecipada, ficando em `O(n)` nesse caso.
